@@ -1,0 +1,13 @@
+b259a66ba9614db0bc60e1a7197a0afd *DESCRIPTION
+f6e307c761dd8c1a30533c9d62b35716 *NAMESPACE
+afea578f9bfaff203d9ee596874a3c11 *R/run_dosedesignR.R
+4b3a72255a7ecdf07c3c404d69d60c7c *build/vignette.rds
+7baad4851c5c8268372bee8f5fce2f88 *inst/doc/dosedesignR.R
+9211e82bd72e23b86a83a3aea9a1f45d *inst/doc/dosedesignR.html
+a6e85adddec0f7f34d39d4e23e074ac8 *inst/doc/dosedesignR.rmd
+55e3834b5894956a6c5d3eb50704d5f7 *inst/shiny-app/dosedesignR/Optimization.R
+976f97835ceda7d3f6d70a94d2942844 *inst/shiny-app/dosedesignR/Simulation.R
+a41426e893e861f80c6b268ca403a858 *inst/shiny-app/dosedesignR/Visualize.R
+e44f71699ba013884f486b997fdb1b3c *inst/shiny-app/dosedesignR/app.R
+3dd768acd5dce4c7ea5aa1496a4d8528 *man/run_dosedesignR.Rd
+a6e85adddec0f7f34d39d4e23e074ac8 *vignettes/dosedesignR.rmd

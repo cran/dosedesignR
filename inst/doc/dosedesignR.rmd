@@ -1,0 +1,65 @@
+---
+title: "dosedesignR"
+author: "F. Mendolia, K. Walkamp, K. Roth, T. Schmelter, C. Neumann,  Z. Gao, A. Kaiser, S. Jeske, H. Kulmann"
+date: "May 3, 2019"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{dosedesignR Package Manual}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Description
+
+The Shiny application dosedesignR provides the user with an interactive application which can be used to facilitate the planning of dose finding studies by applying the theory of optimal experimental design. The application visualizes dose-response curves, optimal designs and corresponding simulated realizations of dose-response studies.
+
+## Functionality
+
+After loading the package `dosedesignR`, the application can be started by calling the function `run_dosedesignR()` upon which the user interface opens. The user interface is split into two parts: a sidebar panel on the left side for specifying general options and the main panel for investigating different dose-response relationships.
+
+### Left sidebar panel
+
+In the _Options_ panel it is possible to specify the minimum and maximum response as well as the minimum and maximum dose relevant for the dose-response relationship. The default setting for the minimum dose is 0, corresponding to placebo, which cannot be changed. The response and dose options are mainly used for plotting, even though the maximum dose is also a design parameter. 
+
+For the _Design Options_ the total number of patients that should be distributed across the different dose levels determined by the optimal design can be entered. Furthermore, it is possible to choose between two different dose restrictions for the optimal design: _Min and max dose only_ and _Specify dose levels_. For _Min and max dose_ only the optimal design is derived on the continuous design space between the minimum and the maximum dose defined above. These designs are theoretically optimal and calculated exactly. _For Specify dose levels_ specific dose levels need to be entered in the _Dose levels panel_ beneath (separated by semicolon) and the optimal design is derived restricted to these entered dose levels. To find the optimal designs an optimization algorithm selects among all possible combinations of patients and dose levels. Additionally, the underlying optimality criterion for the calculation of the optimal design can be selected (in the current version this is restricted to D-Optimality). Lastly, one can specify the population standard deviation of the response and a confidence level. Both will be used for the simulations in the main panel.
+
+### Main panel
+
+The main panel is again split up into three vertical subpanels, labeled as _Candidate Model 1_, _Candidate Model 2_ and _Candidate Model 3_. Thus it allows to simultaneously compare three different dose-response models. So far the linear model, the emax model and the sigmoidal emax model are implemented. Let $d$ denote the dose within the specified dose range. Then the models are defined as follows
+
+$$ \mathrm{response}_{lin}= E_0+Slope \cdot d,$$
+$$ \mathrm{response}_{emax}=E_0 + \frac{E_{max} d }{ED_{50} + d},$$
+$$ \mathrm{response}_{sig}=E_0 + \frac{E_{max} d^h }{ED_{50}^h + d^h},$$
+Here, $d$ denotes the dose, $E_0$ is the placebo response, $E_{max}$is the maximal treatment effect, $ED_{50}$ is the half effect dose, i.e. the dose at which half of the maximal effect is reached, and $h$ is the Hill parameter which determines the steepness of the response increase/decrease.
+
+Each of the three vertical candidate panels consists of three parts: a top part to choose the model parameters and plot the corresponding dose-response curve, a middle part to visualize the optimal design and a bottom part in which a user-defined design can be compared with the optimal design.
+
+In the top part, the values of the respective model parameters can be entered in the _Parameters_ tab. The _Plot_ tab next to the _Parameters_ tab visualizes the dose-response curve based on the chosen model and the corresponding model parameters.
+
+In the middle part, the optimal design based on the chosen dose-response model and corresponding parameter values is visualized by black vertical lines, taking into account the number of patients, the dose restrictions and the optimality criterion selected in the left sidebar panel. Additionally, the optimal design is tabulated underneath the plots. 
+
+In the bottom part, a user defined design can be entered by specifying dose levels in the _Dose levels_ input box and the corresponding number of patients in the _Patients_ input box (separated by semicolon, respectively). The user defined design is additionally visualized in the optimal design plot by green dots. The user defined design is not bound by the dose restrictions selected in the left sidebar panel and dose levels apart from these could be specified. Underneath the input boxes for the user defined design the properties of the design in tabular form are shown. In the first line, the total number of patients entered is shown. In the second line the efficiency of the user defined design compared to the optimal design (under the chosen dose restrictions) is shown in percentage. In the last line this efficiency is converted to the number of patients which would additionally be needed to achieve the same precision in the parameter estimation (O'Quigley et al., 2017).
+
+By choosing the _Simulation_ tab next to the _Parameters_ and _Plot_ tab in the top part of the panel, another plot appears. Here it is possible to visualize simulated realizations of dose-response measurements and the corresponding effect on the estimation of the dose-response curve. The underlying design, i.e. the dose levels and the number of patients per dose level, can be selected to be any of the three optimal designs or any of the three user defined designs specified in the three candidate model panels. Response realizations are randomly drawn from a normal distribution with mean equal to the value of the true curve and variance based on the population standard deviation specified in the left sidebar panel. The true and the estimated curve together with the corresponding confidence interval are shown. True curve here refers to the specified candidate model in the corresponding panel.
+
+## Additional information
+The application was optimized for display on a screen/projector with HD resolution.
+
+## Disclaimer  
+
+The authors do not guarantee the accuracy of any results.
+
+## Acknowledgements
+The authors would like to thank the "dose finding group"" within Bayer’s Biostatistics Innovation Center [1].
+
+Besides other packages, the DoseFinding [2] package and the shiny [3] package are extensively used within this dosedesignR package.
+
+## References
+*	Kulmann H., Muysers C., Dmitrienko A. and Röhmel J. (2016). _The Biostatistics Innovation Center at Bayer._ Biopharmaceutical  Report 23, 1-5.
+*	Bornkamp B., Pinheiro J. and Bretz F. (2016). _DoseFinding: Planning and Analyzing Dose Finding Experiments._ R package version 0.9-15. https://CRAN.R-project.org/package=DoseFinding.
+* Winston Chang, Joe Cheng, JJ Allaire, Yihui Xie and Jonathan McPherson (2018). _shiny: Web Application Framework for R._ R package version 1.1.0. https://CRAN.R-project.org/package=shiny
