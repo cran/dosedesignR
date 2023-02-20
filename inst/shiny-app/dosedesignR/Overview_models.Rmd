@@ -1,0 +1,106 @@
+
+#### Model Candidate {{i}} (`r params$model{{i}}`):<br>
+  ```{r echo = FALSE}
+    
+  
+  if(length(params$data2) > 0 & !is.na(params$model{{i}})){ 
+    
+    
+  x <- ComputeOptimal2(
+    model  = params$model{{i}},
+    regimen = params$regimen,
+    levels = params$levels,
+    dmin = params$minimumDose,
+    dmax = params$maximumDose,
+    parameter1 = params$param{{i}}_1,
+    parameter2 = params$param{{i}}_2,
+    parameter3 = params$param{{i}}_3,
+    parameter4 = params$param{{i}}_4
+  )
+  
+  data2 <- params$data2[params$selectnr]
+
+      if (params$model{{i}} == "Linear") {
+        tmp <- lapply(data2, function(x){
+          as.data.frame(t(DoseFinding::fitMod(x$df$dose, x$df$response, model = "linear")$coefs))
+        })
+        tmp2 <- lapply(tmp, function(x){
+          data.frame("Intercept" = c(params$param{{i}}_1, round(as.numeric(x[1]), 2)), "Slope" = c(params$param{{i}}_2, round(as.numeric(x[2]), 2)))})
+      }
+      if (params$model{{i}} == "Emax") {
+        tmp <- lapply(data2, function(x){
+          as.data.frame(t(DoseFinding::fitMod(x$df$dose, x$df$response, model = "emax", bnds = defBnds(max(x$df$dose))$emax)$coefs))
+         })
+        tmp2 <- lapply(tmp,function(x){
+          data.frame("E0" = c(params$param{{i}}_1, round(as.numeric(x[1]), 2)),
+                     "ED50" = c(params$param{{i}}_2, round(as.numeric(x[3]), 2)),
+                     "Emax" = c(params$param{{i}}_3, round(as.numeric(x[2]), 2)))
+          })
+      }
+      if (params$model{{i}} == "Sigmoidal Emax") {
+        tmp <- lapply(data2, function(x){
+          as.data.frame(t(DoseFinding::fitMod(x$df$dose, x$df$response, model = "sigEmax", bnds = defBnds(max(x$df$dose))$sigEmax)$coefs))
+          })
+        tmp2 <- lapply(tmp, function(x){
+          data.frame("E0" = c(params$param{{i}}_1, round(as.numeric(x[1]), 2)),
+                     "ED50" = c(params$param{{i}}_2, round(as.numeric(x[3]), 2)),
+                     "Emax" = c(params$param{{i}}_3,round(as.numeric(x[2]), 2)),
+                     "Hill" = c(params$param{{i}}_4, round(as.numeric(x[4]), 2)))
+        })
+      }
+
+      data2 
+      
+      
+      tmp2 <- rbind.data.frame(tmp2[[1]][1, ], do.call(rbind.data.frame, lapply(tmp2, function(x) 
+      data.frame(do.call(cbind.data.frame, x[2, ]), check.names = FALSE))))
+
+      tmp2 
+      knitr::kable(tmp2) %>% 
+        kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")%>%
+        column_spec(1:dim(tmp2)[2], bold = T, color = "white", background = c("#c94053",rgb(f_col_report(seq(0, 1, length = dim(tmp2)[1]-1)), maxColorValue = 255))) 
+  } 
+  if (length(params$data2) == 0) {
+  
+    if (params$model{{i}} == "Linear") {
+        tmp2 <- data.frame("Intercept" = params$param{{i}}_1, "Slope" = params$param{{i}}_2)
+    }
+    if (params$model{{i}} == "Emax") {
+        tmp2 <- data.frame("E0" = params$param{{i}}_1,
+                     "ED50" = params$param{{i}}_2,
+                     "Emax" = params$param{{i}}_3)
+    }             
+    if (params$model{{i}} == "Sigmoidal Emax") {
+      tmp2 <- data.frame("E0" = params$param{{i}}_1,
+                     "ED50" = params$param{{i}}_2,
+                     "Emax" = params$param{{i}}_3,
+                     "Hill" = params$param{{i}}_4)
+    }
+      
+    tmp2 
+    knitr::kable(tmp2) %>% 
+        kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left") %>%
+        column_spec(1:dim(tmp2)[2], bold = T, color = "white", background = c("#c94053",rgb(f_col_report(seq(0, 1, length = dim(tmp2)[1]-1)), maxColorValue = 255))) 
+  }
+  ```
+  
+  
+  ```{r echo = FALSE, warning=FALSE}
+#Candidate Model {{i}}:
+ComputeModelFunction2(
+  model = params$model{{i}},
+  tab = {{i}},
+  ymin = params$minimumResponse,
+  ymax = params$maximumResponse,
+  dmin = params$minimumDose,
+  dmax = params$maximumDose,
+  data = params$data,
+  parameter1 = params$param{{i}}_1,
+  parameter2 = params$param{{i}}_2,
+  parameter3 = params$param{{i}}_3,
+  parameter4 = params$param{{i}}_4,
+  data_esti = params$data2,
+  plot_opt = params$plot_opt,
+  selectnr = params$selectnr
+)
+```

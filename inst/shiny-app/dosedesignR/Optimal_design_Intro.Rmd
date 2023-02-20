@@ -1,0 +1,10 @@
+### Optimal Designs (optional)
+
+Optimal Designs are based on the chosen parameter setting in the candidate models above.
+The following options for the optimal design were chosen
+
+Number of patients: `r params$npats`
+
+Dose restriction: `r params$regimen_text`
+
+Optimality Criterion: D-optimality

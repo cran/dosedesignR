@@ -1,0 +1,43 @@
+
+Candidate Model {{i}} (`r params$model{{i}}`)
+```{r, CompOpt{{i}}, echo = FALSE}
+
+x <- ComputeOptimal2(
+  model= params$model{{i}},
+  regimen = params$regimen,
+  dmin = params$minimumDose,
+  dmax = params$maximumDose,
+  levels = params$levels,
+  parameter1 = params$param{{i}}_1,
+  parameter2 = params$param{{i}}_2,
+  parameter3 = params$param{{i}}_3,
+  parameter4 = params$param{{i}}_4              
+)
+x_table <- t(x$res)
+x_table[, 2] <- round(x_table[, 2] * params$npats, 1)
+colnames(x_table) <- c("Dose", "Number of Patients")
+knitr::kable(x_table) %>% 
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+
+
+```{r, CompEffi{{i}}, echo = FALSE} 
+
+  if(is.na(params$user_chosen{{i}})) {
+    user_Val <- NULL
+  } else {
+    user_Val <- params$user_chosen{{i}}
+  }
+
+cE <- ComputeEfficiency2(userVal = user_Val, optVal = x, model = params$model{{i}}, npats = params$npats)
+
+  if (dim(cE)[1] == 3 & dim(cE)[2] == 1) {
+    colnames(cE) <- NULL
+    rownames(cE) <- c("Patients", "Efficiency [%]", "Additional patients needed")
+    } else if (dim(cE)[1] == 1 & dim(cE)[2] == 1) {
+      colnames(cE) <- NULL
+      rownames(cE) <- c("Information:")
+  }
+```
+  
+`r ifelse(all(is.na(params$user_chosen{{i}})),"",paste0("The design with ", paste(c(apply(params$user_chosen{{i}},1,function(x){paste0(x[2]," patients at level ", x[1],",")})), collapse = " "), "(overall ",sum(params$user_chosen{{i}}$patients), " patients) has an efficiency of", cE[2,1], "% compared to the optimal design as described before.", cE[1,1], " additional patients distributed proportional to the dose levels in the user chosen design are needed to reach 100% efficiency"))`

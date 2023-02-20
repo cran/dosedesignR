@@ -1,0 +1,182 @@
+---
+title: "dosedesignR Report"
+output_format: html
+always_allow_html: true
+params:
+  numberCandidateModels: NA
+  maximumResponse: NA
+  minimumResponse: NA
+  maximumDose: NA
+  minimumDose: NA
+  model1: NA
+  param1_1: NA
+  param1_2: NA
+  param1_3: NA
+  param1_4: NA
+  model2: NA
+  param2_1: NA
+  param2_2: NA
+  param2_3: NA
+  param2_4: NA
+  model3: NA
+  param3_1: NA
+  param3_2: NA
+  param3_3: NA
+  param3_4: NA
+  model4: NA
+  param4_1: NA
+  param4_2: NA
+  param4_3: NA
+  param4_4: NA
+  model5: NA
+  param5_1: NA
+  param5_2: NA
+  param5_3: NA
+  param5_4: NA
+  model6: NA
+  param6_1: NA
+  param6_2: NA
+  param6_3: NA
+  param6_4: NA
+  model7: NA
+  param7_1: NA
+  param7_2: NA
+  param7_3: NA
+  param7_4: NA
+  model8: NA
+  param8_1: NA
+  param8_2: NA
+  param8_3: NA
+  param8_4: NA
+  model9: NA
+  param9_1: NA
+  param9_2: NA
+  param9_3: NA
+  param9_4: NA
+  model10: NA
+  param10_1: NA
+  param10_2: NA
+  param10_3: NA
+  param10_4: NA
+  model11: NA
+  param11_1: NA
+  param11_2: NA
+  param11_3: NA
+  param11_4: NA
+  model12: NA
+  param12_1: NA
+  param12_2: NA
+  param12_3: NA
+  param12_4: NA
+  data: NA
+  data2: NA
+  plot_opt: NA
+  selectnr: NA
+  sdsim: NA
+  clevel: NA
+  data_name: NA
+  npats: NA
+  regimen: NA
+  regimen_text: NA
+  levels: NA
+  user_chosen1: NA
+  user_chosen2: NA
+  user_chosen3: NA
+  user_chosen4: NA
+  user_chosen5: NA
+  user_chosen6: NA
+  user_chosen7: NA
+  user_chosen8: NA
+  user_chosen9: NA
+  user_chosen10: NA
+  user_chosen11: NA
+  user_chosen12: NA
+  call_Mod: NA
+  report_selection: NA
+  report_tabs: NA
+  data_cols: NA
+  rendered_by_shiny: FALSE
+  
+---
+<div align="left">
+![](Iconx_dosedesignR.png){width=150px; height=150px}
+</div>
+Created: `r Sys.time()`
+
+```{r child =if ("General Options" %in% params$report_selection) 'General_options.Rmd'}
+```
+  
+```{r child = 'Overview_models_Intro.Rmd'}
+
+```
+```{r echo = FALSE}
+if (params$rendered_by_shiny)
+  shiny::setProgress(0.1) 
+```
+```{r child =if (length(params$data2) > 0) 'Overview_models_Intro2.Rmd'}
+```
+```{r echo = FALSE}
+if (params$rendered_by_shiny)
+  shiny::setProgress(0.2) 
+```
+```{r include = FALSE}
+prms <- params$report_tabs
+
+out <-  NULL
+for (i in prms) out <- c(out, knitr::knit_expand("Overview_models.Rmd"))
+```
+
+`r paste(knitr::knit(text = out), collapse = '\n')`  
+
+
+```{r child = if ("Optimal Design" %in% params$report_selection) 'Optimal_design_Intro.Rmd'}
+
+```
+```{r echo = FALSE}
+if (params$rendered_by_shiny)
+  shiny::setProgress(0.3) 
+```
+```{r include = FALSE}
+prms <- params$report_tabs
+
+out <-  NULL
+for (i in prms) out <- c(out, knitr::knit_expand("Optimal_design.Rmd"))
+```
+
+`r if ("Optimal Design" %in% params$report_selection) paste(knitr::knit(text = out), collapse = '\n')`  
+
+```{r child = if ("Simulation" %in% params$report_selection) 'Simulation_Intro.Rmd'}
+
+```
+```{r echo = FALSE}
+if (params$rendered_by_shiny)
+  shiny::setProgress(0.4) 
+```
+```{r include = FALSE}
+prms <- params$report_tabs
+
+out <-  NULL
+for (i in prms) out <- c(out, knitr::knit_expand("Simulation.Rmd"))
+```
+
+`r if ("Simulation" %in% params$report_selection) paste(knitr::knit(text = out), collapse = '\n')`
+```{r echo = FALSE}
+if (params$rendered_by_shiny)
+  shiny::setProgress(0.7) 
+```
+
+```{r echo = FALSE}
+if (params$rendered_by_shiny)
+  shiny::setProgress(0.9) 
+```
+```{r child = if ("Session Info" %in% params$report_selection) 'Session_info.Rmd'}
+
+```
+
+```{r echo = FALSE}
+if (params$rendered_by_shiny)
+  shiny::setProgress(1) 
+```
+
+
+

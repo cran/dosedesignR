@@ -1,0 +1,7 @@
+
+### Candidate Model {{i}} (`r params$model{{i}}`)
+
+```{r, perf_Sim{{i}}, echo = FALSE, warning=FALSE} 
+performSimulation2(tab = {{i}},inp = params$call_Mod, sdsim = params$sdsim,
+dmin = params$minimumDose,dmax = params$maximumDose,clevel = params$clevel,sim = "Optimal {{i}}", model = params$model{{i}})
+```

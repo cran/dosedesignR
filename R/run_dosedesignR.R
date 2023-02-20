@@ -10,10 +10,12 @@
 #' @param browser path to browser exe (defaults to standard browser)
 #' @param ColorBG background color (defaults to "#424242")
 #' @param ColorText text color (defaults to "#828282")
+#' @param numberCandidateModels number of panels(default: 6)
 #'
 #' @keywords dosedesignR
 #'
 #' @details Further information on how to use this application can be found in the vignette of this package.
+#'
 #'
 #' @examples
 #' if(interactive()){
@@ -55,23 +57,52 @@
 #' }
 #'
 #'
-#' 
-run_dosedesignR <-  function(ColorBG="#424242",
-                            ColorText="#828282",
-                            browser=getOption("shiny.launch.browser", interactive()),
-                            host=NULL,
-                            port=NULL)
-  {
-    # colortag <- paste("body {background-color: ", ColorBG, "; color: ", ColorText, "}", sep="")
-    # assign("ddr.colortag", ddr.colortag, envir = .GlobalEnv)
-    appDir <- system.file("shiny-app", "dosedesignR", package = "dosedesignR")
+#'
+
+
+
+run_dosedesignR <-  function(
+  ColorBG = "#424242",
+  ColorText = "#828282",
+  browser = getOption("shiny.launch.browser", interactive()),
+  host = NULL,
+  port = NULL,
+  numberCandidateModels = 4
+) {
+
+    appDir <- system.file("shiny-app", "dosedesignR", "app.R",
+                          package = "dosedesignR")
     if (appDir == "") {
       stop("Could not find Shiny app directory. Try re-installing `dosedesignR`.", call. = FALSE)
     }
 
-    colortagdosdesR <- paste("body {background-color: ", ColorBG, " ; color: ", ColorText, " }", sep="")
+    colortagdosdesR <- paste("body {background-color: ", ColorBG, " ; color: ", ColorText, " }", sep = "")
 
-    shiny::shinyOptions(colortagdosdesR=colortagdosdesR)
-    
-    shiny::runApp(appDir, display.mode = "normal", host=host, port=port, launch.browser=browser)
+    shiny::shinyOptions(colortagdosdesR = colortagdosdesR)
+    shiny::shinyOptions(numberCandidateModels = numberCandidateModels)
+
+     ui <- server <- NULL
+
+    source(appDir, local=TRUE)
+
+    source(system.file("shiny-app", "dosedesignR", "doseDesign_Module.R",
+                          package = "dosedesignR"))
+    source(system.file("shiny-app", "dosedesignR", "simModule_Module.R",
+                          package = "dosedesignR"))
+    source(system.file("shiny-app", "dosedesignR", "doseLevel_Module.R",
+                          package = "dosedesignR"))
+    source(system.file("shiny-app", "dosedesignR", "innerdoseLevel_Module.R",
+                          package = "dosedesignR"))
+    source(system.file("shiny-app", "dosedesignR", "Optimization.R",
+                          package = "dosedesignR"))
+    source(system.file("shiny-app", "dosedesignR", "Simulation.R",
+                          package = "dosedesignR"))
+    source(system.file("shiny-app", "dosedesignR", "Visualize.R",
+                          package = "dosedesignR"))
+
+    shiny::getShinyOption("numberCandidateModels", numberCandidateModels)
+
+    app <- shiny::shinyApp(ui, server)
+
+    shiny::runApp(appDir, display.mode = "normal", host = host, port = port, launch.browser = browser)
   }

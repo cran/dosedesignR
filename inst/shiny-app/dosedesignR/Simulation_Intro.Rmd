@@ -1,0 +1,6 @@
+### Simulation (optional)
+
+#### General options
+For the simulation a normal distributed error with a standard deviation of `r params$sdsim` is assumed. The confidence intervals are at a pointwise `r params$clevel`% level.
+For the candidate model 1 it is assumed that the model 1 is true. The design is as planned in Optimal Design2, i.e. a patients on dose a,…. 
+The simulation leads to following result(s):

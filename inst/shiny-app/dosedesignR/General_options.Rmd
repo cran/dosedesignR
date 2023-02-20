@@ -1,0 +1,7 @@
+
+### General options
+
+Minimum response:`r params$minimumResponse`.<br>
+Maximum response:`r params$maximumResponse`.<br>
+Minimum Dose:`r params$minimumDose`.<br>
+Maximum Dose:`r params$maximumDose`.<br>

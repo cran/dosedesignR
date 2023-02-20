@@ -4,9 +4,14 @@
 \alias{run_dosedesignR}
 \title{run_dosedesignR - Launches the Shiny application}
 \usage{
-run_dosedesignR(ColorBG = "#424242", ColorText = "#828282",
+run_dosedesignR(
+  ColorBG = "#424242",
+  ColorText = "#828282",
   browser = getOption("shiny.launch.browser", interactive()),
-  host = NULL, port = NULL)
+  host = NULL,
+  port = NULL,
+  numberCandidateModels = 4
+)
 }
 \arguments{
 \item{ColorBG}{background color (defaults to "#424242")}
@@ -18,6 +23,8 @@ run_dosedesignR(ColorBG = "#424242", ColorText = "#828282",
 \item{host}{host link (defaults to the local machine "127.0.0.1")}
 
 \item{port}{port number (randomly chosen unless specified as a certain number)}
+
+\item{numberCandidateModels}{number of panels(default: 6)}
 }
 \description{
 Starts the dosedesignR application in the client's browser.

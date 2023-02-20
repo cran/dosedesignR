@@ -1,0 +1,3 @@
+The dataset *`r params$data_name`* was loaded with **`r paste0("<span style = 'color:", params$data_cols[params$selectnr],"'> Dataset",params$selectnr,"</span>")`**. 
+The respective colored line represents the maximum likelihood estimated based on the data sets.
+
